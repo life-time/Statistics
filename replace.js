@@ -81,7 +81,7 @@ function splitPage(){
 
 	const leftPanel = dom.createElement("DIV");
 	leftPanel.setAttribute("id","statistics-extension");
-	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; padding-top: 111px; padding-top: 111px; border-right: ridge; height: 100%; z-index: 1010101010");
+	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; padding-top: 111px; padding-top: 111px; border-right: ridge; height: 100%; z-index: 1010101010; background-color: #fafbfd");
 
 	const pos = dom.location.pathname.indexOf("_list");
 	const tableName= dom.location.pathname.slice(1, pos);
@@ -99,25 +99,8 @@ function splitPage(){
 
 function getCollapseButton(columnName){
 	return `
-	<style>
-	    .btn-accordion {
-    	    border-radius: 0;
-		    width: 90%;
-		    margin: 5px;
-		    text-align: left;
-		    font-family: SourceSansPro, "Helvetica Neue", Arial;
-		    font-size: 13px;
-		    color: #000;
-		    background: #e9ebee;
-		    border-color: #e9ebee;
-	    }
-	    .btn-accordion:focus {
-	    	outline: none !important;
-    		outline-offset: 0;
-	    }
-	</style>
 	<div>
-	<button type="button" class="btn btn-info btn-accordion" data-toggle="collapse" data-target="#`
+	<button type="button" class="btn btn-info btn-accordion collapsed" data-toggle="collapse" data-target="#`
 	+ columnName +
 	`">`
   	+ columnName +`
@@ -132,21 +115,40 @@ function getCollapseButton(columnName){
 }
 
 function populateColumns(leftPanel,tableName) {
-	let htmlContent;
-	const columns = getColumns(tableName);
+	let htmlContent = `<style>
+	    .btn-accordion {
+    	    border-radius: 0;
+		    width: 100%;
+		    text-align: left;
+		    font-family: SourceSansPro, "Helvetica Neue", Arial;
+		    font-size: 13px;
+		    color: #000;
+		    border: none;
+		    background-color: #e9ebee;
+	    }
+	    .btn-accordion:focus, .btn-accordion:hover, .btn-accordion:active:focus {
+	    	color: black;
+	    	font-weight: bolder;
+	    	outline: none !important;
+    		outline-offset: 0;
+    		box-shadow: none;
+    		border-radius: 0;
+    		background-color: #e9ebee;
+	    }
+	    .btn-accordion.collapsed {
+	    	background: transparent; !important;
+	    }
+	    .collapse {
+	    	background-color: #f5f7fa;
+	    }
+	</style>`;
+
+	let columns = getColumns(tableName);
 
 	if (columns) {
-		for (i = 0; i < columns.length; i++) {
-			if (htmlContent) {
-	 	 		htmlContent = htmlContent + getCollapseButton(columns[i]);
-			}else{
-				htmlContent = getCollapseButton(columns[i]);
-			}
-		}
-
-		leftPanel.innerHTML = htmlContent;
+		leftPanel.innerHTML = htmlContent + columns.map(getCollapseButton).join('');
 	} else { 
-		leftPanel.innerHTML ="no Columns found";
+		leftPanel.innerHTML = "no Columns found";
 	}
 }
 
