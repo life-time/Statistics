@@ -26,7 +26,7 @@ function refindTable(container) {
 // Filter our all columns that are of a high varience type and that the column doesn't contain any data.
 function getColumns(table){
 	let firstRowData = [...table.querySelector("table[role='grid'] tbody tr").querySelectorAll("td[class='vt']")];
-	let colNames = [...table.querySelectorAll("table[role='grid'] tHead th[role='columnheader']")]
+	let colNames = [...table.querySelector("table[role='grid'] tHead").querySelectorAll("th[role='columnheader']")]
 	let emptyColumns  = firstRowData.filter(function(item){return item.innerText == ""}).map(function(item){return firstRowData.indexOf(item)})
 	let filteredColNames = colNames
 					.filter(function(item){
