@@ -103,7 +103,7 @@ function getCollapseButton(columnName){
 		    width: 100%;
 		    text-align: left;
 		    font-family: SourceSansPro, "Helvetica Neue", Arial;
-		    margin: 8px;		    
+		    margin: 6px;		    
 		    font-size: 13px;
 	    }
 	    .btn-accordion:focus {
