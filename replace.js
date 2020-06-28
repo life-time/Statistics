@@ -76,19 +76,23 @@ function draw(elem, column) {
 // split the page
 function splitPage(){
 	var dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
+	if (dom.getElementById("statistics-extension") !== null){
+		return;
+	}
 
-		var leftPanel = dom.createElement("DIV");
-  		leftPanel.setAttribute("style","position: relative; width: 25%; float: left; height: 100%; background-color: #E3D6CA; z-index: 1010101010");
+	var leftPanel = dom.createElement("DIV");
+	leftPanel.setAttribute("id","statistics-extension");
+	leftPanel.setAttribute("style","position: relative; width: 25%; float: left; height: 100%; background-color: #E3D6CA; z-index: 1010101010");
 
-		var pos = dom.location.pathname.indexOf("_list");
-		var tableName= dom.location.pathname.slice(1, pos);
+	var pos = dom.location.pathname.indexOf("_list");
+	var tableName= dom.location.pathname.slice(1, pos);
 
-		var el = dom.getElementById(tableName+"_list");
-		var table= el.parentElement.parentElement;
+	var el = dom.getElementById(tableName+"_list");
+	var table= el.parentElement.parentElement;
 
-		table.setAttribute("style","position: relative;  width: 75%;  float: left;  height: 100%;   z-index: 1010101010");
-		table.parentNode.insertBefore(leftPanel, table);
-		populateColumns(leftPanel,table);		
+	table.setAttribute("style","position: relative;  width: 75%;  float: left;  height: 100%;   z-index: 1010101010");
+	table.parentNode.insertBefore(leftPanel, table);
+	populateColumns(leftPanel,table);		
 
 }
 
