@@ -1,3 +1,5 @@
+var varientColumnTypes = ["string", "longint", "html", "journal_input"]
+
 // finds the primary table for which we're creating stats
 function findPresentationTable() {
 	return [...document.querySelectorAll('iframe')]
@@ -18,9 +20,20 @@ function refindTable(container) {
 }
 
 // retrieves the table columns and filters only columns for which retrieving stats is meaningful
-function getColumns(table) {
-	return [...table.querySelectorAll("table[role='grid'] tHead th[role='columnheader']")].map(function(item){return item.getAttribute("glide_label")});
+// Filter our all columns that are of a high varience type and that the column doesn't contain any data.
+function getColumns(table){
+	let firstRowData = [...table.querySelector("table[role='grid'] tbody tr").querySelectorAll("td[class='vt']")];
+	let colNames = [...table.querySelectorAll("table[role='grid'] tHead th[role='columnheader']")]
+	let emptyColumns  = firstRowData.filter(function(item){return item.innerText == ""}).map(function(item){return firstRowData.indexOf(item)})
+	let filteredColNames = colNames
+					.filter(function(item){
+						return !varientColumnTypes.includes(item.getAttribute("glide_type")) && !emptyColumns.includes(colNames.indexOf(item))
+					})
+					.map(function(item){return item.getAttribute("glide_label")});
+	
+	return filteredColNames;
 }
+
 
 // create the container which holds the field-stats and populates it
 function createFieldDataStatistics() {
