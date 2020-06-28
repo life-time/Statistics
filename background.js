@@ -2,7 +2,7 @@
 function executeScripts(tabId, injectDetailsArray) {
     function createCallback(tabId, injectDetails, innerCallback) {
         return function () {
-            chrome.tabs.executeScript(tabId, injecstDetails, innerCallback);
+            chrome.tabs.executeScript(tabId, injectDetails, innerCallback);
         };
     }
 

@@ -1,4 +1,4 @@
-const parser = new DOMParser();
+var parser = new DOMParser();
 
 // fetches the data series from the xmlhttp.do endpoint
 async function fetchSeries(table, groupBy, filter) {

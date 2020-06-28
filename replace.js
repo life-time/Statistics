@@ -4,6 +4,7 @@ function findPresentationTable() {
 		.map(f => { 
 			return {
 				table: f.contentWindow.document.body.querySelector("table[role='presentation']"),
+				filter: f.contentWindow.document.body.querySelector(".breadcrumb_container a[filter]:last-of-type"),
 				frame: f
 			}
 		})
@@ -13,6 +14,7 @@ function findPresentationTable() {
 // finds the primary table after navigation
 function refindTable(container) {
 	container.table = container.frame.contentWindow.document.body.querySelector("table[role='presentation']");
+	container.filter = container.frame.contentWindow.document.body.querySelector(".breadcrumb_container a[filter]:last-of-type");
 }
 
 // retrieves the table columns and filters only columns for which retrieving stats is meaningful
@@ -29,10 +31,11 @@ function createFieldDataStatistics() {
 	// for each column create an accordion entry
 
 	// add onclick callbacks to draw bar charts
+	let filter = dataTableContainer.filter.getAttribute('filter');
 }
 
 // for a given svg, create the bar chart
-function draw() {
+function draw(elem, table, column, filter) {
 
 }
 
