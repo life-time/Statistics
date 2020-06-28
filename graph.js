@@ -83,7 +83,7 @@ function transformSeries(series) {
 function barChart(svgElem, width, height, series) {
 	const svg = d3.select(svgElem);
 
-	const margin = {top: 20, right: 0, bottom: 30, left: 250};
+	const margin = {top: 10, right: 0, bottom: 20, left: 10};
 
 	y = d3.scaleBand()
 	      .domain(series.map(d => d.name))
@@ -96,8 +96,8 @@ function barChart(svgElem, width, height, series) {
           .range([margin.left, width - margin.right]);
 
     yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).tickSizeOuter(0));
+        .attr("transform", `translate(${margin.left},-5)`)
+        .call(d3.axisRight(y).tickSizeOuter(0));
 
     xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -110,7 +110,8 @@ function barChart(svgElem, width, height, series) {
 	        .append("rect")
             .attr("x", d => x(0))
             .attr("y", d => y(d.name))
-            .attr("height", y.bandwidth())
+            .attr("height", y.bandwidth() - 20) // leave room for text
+            .attr("transform", "translate(0,20)")
             .attr("width", d => x(d.value) - x(0));
   
 	svg.append("g")

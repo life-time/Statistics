@@ -8,9 +8,9 @@ function findPresentationTable() {
 	return [...document.querySelectorAll('iframe')]
 		.map(f => { 
 			return {
-				table: f.contentWindow.document.body.querySelector("table[role='presentation']"),
+				table:  f.contentWindow.document.body.querySelector("table[role='presentation']"),
 				filter: f.contentWindow.document.body.querySelector(".breadcrumb_container a[filter]:last-of-type"),
-				frame: f
+				frame:  f
 			}
 		})
 		.find(elem => elem.table != null);
@@ -18,7 +18,7 @@ function findPresentationTable() {
 
 // finds the primary table after navigation
 function refindTable(container) {
-	container.table = container.frame.contentWindow.document.body.querySelector("table[role='presentation']");
+	container.table  = container.frame.contentWindow.document.body.querySelector("table[role='presentation']");
 	container.filter = container.frame.contentWindow.document.body.querySelector(".breadcrumb_container a[filter]:last-of-type");
 }
 
@@ -27,14 +27,11 @@ function refindTable(container) {
 function getColumns(table){
 	let firstRowData = [...table.querySelector("table[role='grid'] tbody tr").querySelectorAll("td[class='vt']")];
 	let colNames = [...table.querySelector("table[role='grid'] tHead").querySelectorAll("th[role='columnheader']")]
-	let emptyColumns  = firstRowData.filter(function(item){return item.innerText == ""}).map(function(item){return firstRowData.indexOf(item)})
-	let filteredColNames = colNames
-					.filter(function(item){
-						return !varientColumnTypes.includes(item.getAttribute("glide_type")) && !emptyColumns.includes(colNames.indexOf(item))
-					})
-					.map(function(item){return item.getAttribute("name")});
-	
-	return filteredColNames;
+	let emptyColumns = firstRowData.filter(item => item.innerText == "")
+								   .map(item => firstRowData.indexOf(item));
+	return colNames
+			.filter(item => !varientColumnTypes.includes(item.getAttribute("glide_type")) && !emptyColumns.includes(colNames.indexOf(item)))
+			.map(item => item.getAttribute("name"));
 }
 
 // gets the table name from the URI search part. TODO: find a better way to do this
@@ -62,15 +59,14 @@ function createFieldDataStatistics() {
 		let transformed = transformSeries(series);
 
 		columnToSeries[column] = transformed;
+		console.log("Fetched seriesfor " + column + ": " + JSON.stringify(transformed, null, 2));
+
+		let container = dataTableContainer.frame.contentWindow.document.getElementById(column).firstElementChild;
+		barChart(container, 200, 200, transformed);
 	});
 
 	// add onclick callbacks to draw bar charts
 	
-}
-
-// for a given svg, create the bar chart
-function draw(elem, column) {
-	barChart()
 }
 
 // split the page
@@ -94,8 +90,8 @@ function splitPage(){
 
 	table.setAttribute("style","position: relative;  width: 75%;  float: left;  height: 100%;   z-index: 1010101010");
 	table.parentNode.insertBefore(leftPanel, table);
-	populateColumns(leftPanel,table);		
-
+	// dom.body.insertBefore(leftPanel, dom.body.firstChild);
+	populateColumns(leftPanel,table);
 }
 
 function getCollapseButton(columnName){
@@ -109,7 +105,7 @@ function getCollapseButton(columnName){
  	<div id="`
  	+ columnName +
  	`" class="collapse">
-    	Lorem ipsum dolor sit amet, consectetur adipisicing elit
+    	<svg height="200", width="200"></svg>
 	</div>
 	</div>
 	`;
