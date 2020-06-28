@@ -72,27 +72,29 @@ function createFieldDataStatistics() {
 
 // split the page
 function splitPage(){
-	var dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
+	const dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
 	let statisticsSideBar = dom.getElementById("statistics-extension");
 	if (statisticsSideBar !== null){
 		statisticsSideBar.parentNode.removeChild(statisticsSideBar);
 		return;
 	}
 
-	var leftPanel = dom.createElement("DIV");
+	const leftPanel = dom.createElement("DIV");
 	leftPanel.setAttribute("id","statistics-extension");
 	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; height: 100%; z-index: 1010101010");
 
-	var pos = dom.location.pathname.indexOf("_list");
-	var tableName= dom.location.pathname.slice(1, pos);
+	const pos = dom.location.pathname.indexOf("_list");
+	const tableName= dom.location.pathname.slice(1, pos);
 
-	var el = dom.getElementById(tableName+"_list");
-	var table= el.parentElement.parentElement;
+	const el = dom.getElementById(tableName+"_list");
+	if (el){
+		const table= el.parentElement.parentElement;
 
-	table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 1010101010");
-	table.parentNode.insertBefore(leftPanel, table);
-	// dom.body.insertBefore(leftPanel, dom.body.firstChild);
-	populateColumns(leftPanel,table);
+		table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 1010101010");
+		table.parentNode.insertBefore(leftPanel, table);
+		// dom.body.insertBefore(leftPanel, dom.body.firstChild);
+		populateColumns(leftPanel,table);
+	}
 }
 
 function getCollapseButton(columnName){
@@ -100,11 +102,14 @@ function getCollapseButton(columnName){
 	<style>
 	    .btn-accordion {
     	    border-radius: 0;
-		    width: 100%;
+		    width: 90%;
+		    margin: 5px;
 		    text-align: left;
 		    font-family: SourceSansPro, "Helvetica Neue", Arial;
-		    margin: 6px;		    
 		    font-size: 13px;
+		    color: #000;
+		    background: #e9ebee;
+		    border-color: #e9ebee;
 	    }
 	    .btn-accordion:focus {
 	    	outline: none !important;
@@ -127,8 +132,8 @@ function getCollapseButton(columnName){
 }
 
 function populateColumns(leftPanel,tableName) {
-	var htmlContent;
-	var columns = getColumns(tableName);
+	let htmlContent;
+	const columns = getColumns(tableName);
 
 	if (columns) {
 		for (i = 0; i < columns.length; i++) {
