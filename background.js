@@ -17,7 +17,7 @@ function executeScripts(tabId, injectDetailsArray) {
 
 // respond to clicking on the addon button
 chrome.browserAction.onClicked.addListener(function(tab) {
-	executeScripts(tab.id, [
+	executeScripts(null, [
 		{ file: 'd3.min.js'   },
 		{ file: 'utils.js'   },
 		{ file: 'graph.js'   },

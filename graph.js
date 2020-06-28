@@ -37,11 +37,17 @@ async function fetchSeries(table, groupBy, filter) {
 	  "credentials": "include"
 	});
 
+	if (!resp.ok) {
+		console.log('Failed to fetch series, response: ' + resp);
+		return null;
+	}
+
 	let bdy = await resp.text();
 	let xml = parser.parseFromString(bdy, 'text/xml');
 	let chartDataResponse = JSON.parse(xml.getElementsByTagName('CHART_DATA_RESPONSE')[0].childNodes[0].nodeValue);
 	if (chartDataResponse.STATUS !== 'SUCCESS') {
 		console.log('Failed to fetch series, response: ' + xml);
+		return null;
 	}
 	return JSON.parse(chartDataResponse.CHART_DATA).series[0];
 }

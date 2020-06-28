@@ -1,4 +1,7 @@
-var varientColumnTypes = ["string", "longint", "html", "journal_input"]
+var varientColumnTypes = ["string", "longint", "html", "journal_input"];
+var columnToSeries = {};
+
+// TODO: listen on filter changes
 
 // finds the primary table for which we're creating stats
 function findPresentationTable() {
@@ -29,31 +32,49 @@ function getColumns(table){
 					.filter(function(item){
 						return !varientColumnTypes.includes(item.getAttribute("glide_type")) && !emptyColumns.includes(colNames.indexOf(item))
 					})
-					.map(function(item){return item.getAttribute("glide_label")});
+					.map(function(item){return item.getAttribute("name")});
 	
 	return filteredColNames;
 }
 
+// gets the table name from the URI search part. TODO: find a better way to do this
+function getTableName() {
+	var match = decodeURIComponent(document.location.search).match(/uri=\/(.+)_list.do/);
+	return match[1];
+}
 
 // create the container which holds the field-stats and populates it
 function createFieldDataStatistics() {
 	// create fields-data container
+	splitPage();
 
 	// get columns
+	let columns = getColumns(dataTableContainer.table);
 
 	// for each column create an accordion entry
+	let filter = dataTableContainer.filter.getAttribute('filter');
+	let table = getTableName();
+	columns.forEach(async column => {
+		let series = await fetchSeries(table, column, filter);
+		if (series == null)
+			return;
+
+		let transformed = transformSeries(series);
+
+		columnToSeries[column] = transformed;
+	});
 
 	// add onclick callbacks to draw bar charts
-	let filter = dataTableContainer.filter.getAttribute('filter');
+	
 }
 
 // for a given svg, create the bar chart
-function draw(elem, table, column, filter) {
-
+function draw(elem, column) {
+	barChart()
 }
 
 // split the page
-function splitePage(){
+function splitPage(){
 	var dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
 
 		var leftPanel = dom.createElement("DIV");
@@ -88,13 +109,11 @@ function getCollapseButton(columnName){
 	`;
 }
 
-function populateColumns(leftPanel,tableName){
-	
-
+function populateColumns(leftPanel,tableName) {
 	var htmlContent;
 	var columns = getColumns(tableName);
 
-	if (columns){
+	if (columns) {
 		for (i = 0; i < columns.length; i++) {
 			if (htmlContent) {
 	 	 		htmlContent = htmlContent + getCollapseButton(columns[i]);
@@ -102,11 +121,11 @@ function populateColumns(leftPanel,tableName){
 				htmlContent = getCollapseButton(columns[i]);
 			}
 		}
-		leftPanel.innerHTML = htmlContent;
-	}
-	else 
-		leftPanel.innerHTML ="no Columns found";
 
+		leftPanel.innerHTML = htmlContent;
+	} else { 
+		leftPanel.innerHTML ="no Columns found";
+	}
 }
 
 console.log('Turkugulu plugin loaded');
@@ -125,9 +144,7 @@ if (dataTableContainer) {
 			return;
 		}
 		createFieldDataStatistics();
-		splitePage();
 	};
-	splitePage();
 } else {
 	console.log('table not found without listener');
 }
