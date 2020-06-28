@@ -81,7 +81,7 @@ function splitPage(){
 
 	const leftPanel = dom.createElement("DIV");
 	leftPanel.setAttribute("id","statistics-extension");
-	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; height: 100%; z-index: 1010101010");
+	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; padding-top: 111px; padding-top: 111px; border-right: ridge; height: 100%; z-index: 1010101010");
 
 	const pos = dom.location.pathname.indexOf("_list");
 	const tableName= dom.location.pathname.slice(1, pos);
