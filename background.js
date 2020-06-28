@@ -1,3 +1,4 @@
+// used to inject multiple content scripts into the page
 function executeScripts(tabId, injectDetailsArray) {
     function createCallback(tabId, injectDetails, innerCallback) {
         return function () {
@@ -14,6 +15,7 @@ function executeScripts(tabId, injectDetailsArray) {
         callback();   // execute outermost function
 }
 
+// respond to clicking on the addon button
 chrome.browserAction.onClicked.addListener(function(tab) {
 	executeScripts(tab.id, [
 		{ file: 'd3.min.js'   },

@@ -1,3 +1,4 @@
+// finds the primary table for which we're creating stats
 function findPresentationTable() {
 	return [...document.querySelectorAll('iframe')]
 		.map(f => { 
@@ -9,16 +10,39 @@ function findPresentationTable() {
 		.find(elem => elem.table != null);
 }
 
+// finds the primary table after navigation
 function refindTable(container) {
 	container.table = container.frame.contentWindow.document.body.querySelector("table[role='presentation']");
 }
 
-console.log('replace loaded');
+// retrieves the table columns and filters only columns for which retrieving stats is meaningful
+function getColumns(table) {
+	return [...table.querySelectorAll("table[role='grid'] tHead th[role='columnheader']")].map(function(item){return item.getAttribute("glide_label")});
+}
 
+// create the container which holds the field-stats and populates it
+function createFieldDataStatistics() {
+	// create fields-data container
+
+	// get columns
+
+	// for each column create an accordion entry
+
+	// add onclick callbacks to draw bar charts
+}
+
+// for a given svg, create the bar chart
+function draw() {
+
+}
+
+console.log('Turkugulu plugin loaded');
+
+// find the primary table
 dataTableContainer = findPresentationTable();
+
 if (dataTableContainer) {
-	dataTableContainer.table.style.fontFamily = 'fantasy';
-	console.log('changed style without listener');
+	createFieldDataStatistics();
 
 	// subscribe to iframe reload
 	dataTableContainer.frame.onload = () => {
@@ -27,8 +51,7 @@ if (dataTableContainer) {
 			console.log('table lost, TODO: somehow reinstall hook after table re-found');
 			return;
 		}
-		dataTableContainer.table.style.fontFamily = 'fantasy';
-		console.log('changed style with listener');
+		createFieldDataStatistics();
 	};
 } else {
 	console.log('table not found without listener');

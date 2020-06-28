@@ -1,5 +1,6 @@
 const parser = new DOMParser();
 
+// fetches the data series from the xmlhttp.do endpoint
 async function fetchSeries(table, groupBy, filter) {
 	const formData = new URLSearchParams();
 	formData.append("sysparm_processor", "ChartDataProcessor");
@@ -45,6 +46,9 @@ async function fetchSeries(table, groupBy, filter) {
 	return JSON.parse(chartDataResponse.CHART_DATA).series[0];
 }
 
+// transforms the fetched series as follows:
+// - reduce to max of 5 items. If more, keep the most dominant 4 and add an "other" entry
+// - transform from arrays to array of entries [{"name": "whatever", "value": 4}, {"name": "another", "value": 5}]
 function transformSeries(series) {
 	const retval = [];
 	let i=0;
@@ -69,6 +73,7 @@ function transformSeries(series) {
     return retval;
 }
 
+// creates an S3 bar chart
 function barChart(svgElem, width, height, series) {
 	const svg = d3.select(svgElem);
 
@@ -95,7 +100,7 @@ function barChart(svgElem, width, height, series) {
 
 	svg.append("g")
         .attr("fill", "#2f7ed8")
-	    .selectAll("rect").data(d3data).enter()
+	    .selectAll("rect").data(series).enter()
 	        .append("rect")
             .attr("x", d => x(0))
             .attr("y", d => y(d.name))
