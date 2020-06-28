@@ -125,7 +125,7 @@ function getCollapseButton(columnName){
  	<div id="`
  	+ columnName +
  	`" class="collapse">
-    	<svg height="200", width="200"></svg>
+    	<svg height="200", width="140"></svg>
 	</div>
 	</div>
 	`;
