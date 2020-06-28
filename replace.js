@@ -62,8 +62,11 @@ function createFieldDataStatistics() {
 		columnToSeries[column] = transformed;
 		console.log("Fetched seriesfor " + column + ": " + JSON.stringify(transformed, null, 2));
 
-		let container = dataTableContainer.frame.contentWindow.document.getElementById(column).firstElementChild;
-		barChart(container, 200, 200, transformed);
+		if (dataTableContainer.frame.contentWindow.document.getElementById(column)){
+			let container = dataTableContainer.frame.contentWindow.document.getElementById(column).firstElementChild;
+			barChart(container, 200, 200, transformed);
+		}
+		
 	});
 
 	// add onclick callbacks to draw bar charts
@@ -72,28 +75,30 @@ function createFieldDataStatistics() {
 
 // split the page
 function splitPage(){
-	const dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
-	let statisticsSideBar = dom.getElementById("statistics-extension");
+	const doc = dataTableContainer.frame.contentWindow.document;
+	const pos = doc.location.pathname.indexOf("_list");
+	const tableName= doc.location.pathname.slice(1, pos);
+	const table = doc.getElementById(tableName+"_table");
+
+	let statisticsSideBar = doc.getElementById("statistics-extension");
 	if (statisticsSideBar !== null){
 		statisticsSideBar.parentNode.removeChild(statisticsSideBar);
-		return;
+		const table = doc.getElementById(tableName+"_table");
+		table.setAttribute("style","position: relative;  width: 100%;");
+		return;	
 	}
 
-	const leftPanel = dom.createElement("DIV");
-	leftPanel.setAttribute("id","statistics-extension");
-	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; padding-top: 111px; padding-top: 111px; border-right: ridge; height: 100%; z-index: 1010101010; background-color: #fafbfd");
-
-	const pos = dom.location.pathname.indexOf("_list");
-	const tableName= dom.location.pathname.slice(1, pos);
-
-	const el = dom.getElementById(tableName+"_list");
-	if (el){
-		const table= el.parentElement.parentElement;
-
+	const statisticsPanel = doc.createElement("DIV");
+	statisticsPanel.setAttribute("id","statistics-extension");
+	statisticsPanel.setAttribute("style","position: relative; width: 10%; border-top: ridge;float: left; margin-top: 29px; height: 100%;"); 
+	
+	if (table){
 		table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 1010101010");
-		table.parentNode.insertBefore(leftPanel, table);
-		// dom.body.insertBefore(leftPanel, dom.body.firstChild);
-		populateColumns(leftPanel,table);
+		table.parentNode.insertBefore(statisticsPanel, table);
+		// dom.body.insertBefore(statisticsPanel, dom.body.firstChild);
+		populateColumns(statisticsPanel,table);
+		// add title
+		statisticsPanel.innerHTML = ` <div style="padding: 9px; border-bottom: ridge; color:#303a4;">Statistics</div>` + statisticsPanel.innerHTML 
 	}
 }
 
@@ -114,7 +119,7 @@ function getCollapseButton(columnName){
 	`;
 }
 
-function populateColumns(leftPanel,tableName) {
+function populateColumns(statisticsPanel,tableName) {
 	let htmlContent = `<style>
 	    .btn-accordion {
     	    border-radius: 0;
@@ -146,9 +151,9 @@ function populateColumns(leftPanel,tableName) {
 	let columns = getColumns(tableName);
 
 	if (columns) {
-		leftPanel.innerHTML = htmlContent + columns.map(getCollapseButton).join('');
+		statisticsPanel.innerHTML = htmlContent + columns.map(getCollapseButton).join('');
 	} else { 
-		leftPanel.innerHTML = "no Columns found";
+		statisticsPanel.innerHTML = "no Columns found";
 	}
 }
 
