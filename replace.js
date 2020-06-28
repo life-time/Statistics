@@ -76,7 +76,9 @@ function draw(elem, column) {
 // split the page
 function splitPage(){
 	var dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
-	if (dom.getElementById("statistics-extension") !== null){
+	let statisticsSideBar = dom.getElementById("statistics-extension");
+	if (statisticsSideBar !== null){
+		statisticsSideBar.parentNode.removeChild(statisticsSideBar);
 		return;
 	}
 
