@@ -98,6 +98,7 @@ function barChart(svgElem, width, height, series) {
     yAxis = g => g
     	.style("font-family", 'SourceSansPro, "Helvetica Neue", Arial')
     	.style("font-size", "13px")
+	.style("stroke-width", "0px")
         .attr("transform", `translate(${margin.left},-5)`)
         .call(d3.axisRight(y).tickSizeOuter(0));
 
