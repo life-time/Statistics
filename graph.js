@@ -104,7 +104,7 @@ function barChart(svgElem, width, height, series) {
 
     xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x))
+        .call(d3.axisBottom(x).ticks(3))
         .call(g => g.select(".domain").remove());
 
 	svg.append("g")
