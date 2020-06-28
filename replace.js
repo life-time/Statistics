@@ -31,7 +31,8 @@ function getColumns(table){
 								   .map(item => firstRowData.indexOf(item));
 	return colNames
 			.filter(item => !varientColumnTypes.includes(item.getAttribute("glide_type")) && !emptyColumns.includes(colNames.indexOf(item)))
-			.map(item => item.getAttribute("name"));
+			.map(item => item.getAttribute("name"))
+			.filter(item => !item.includes("date"));
 }
 
 // gets the table name from the URI search part. TODO: find a better way to do this
@@ -80,7 +81,7 @@ function splitPage(){
 
 	var leftPanel = dom.createElement("DIV");
 	leftPanel.setAttribute("id","statistics-extension");
-	leftPanel.setAttribute("style","position: relative; width: 25%; float: left; height: 100%; background-image: url('https://i.gifer.com/Xnbj.gif'); z-index: 1010101010");
+	leftPanel.setAttribute("style","position: relative; width: 10%; float: left; height: 100%; z-index: 1010101010");
 
 	var pos = dom.location.pathname.indexOf("_list");
 	var tableName= dom.location.pathname.slice(1, pos);
@@ -88,7 +89,7 @@ function splitPage(){
 	var el = dom.getElementById(tableName+"_list");
 	var table= el.parentElement.parentElement;
 
-	table.setAttribute("style","position: relative;  width: 75%;  float: left;  height: 100%;   z-index: 1010101010");
+	table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 1010101010");
 	table.parentNode.insertBefore(leftPanel, table);
 	// dom.body.insertBefore(leftPanel, dom.body.firstChild);
 	populateColumns(leftPanel,table);
@@ -96,8 +97,21 @@ function splitPage(){
 
 function getCollapseButton(columnName){
 	return `
+	<style>
+	    .btn-accordion {
+    	    border-radius: 0;
+		    width: 100%;
+		    text-align: left;
+		    font-family: SourceSansPro, "Helvetica Neue", Arial;
+		    font-size: 13px;
+	    }
+	    .btn-accordion:focus {
+	    	outline: none !important;
+    		outline-offset: 0;
+	    }
+	</style>
 	<div>
-	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#`
+	<button type="button" class="btn btn-info btn-accordion" data-toggle="collapse" data-target="#`
 	+ columnName +
 	`">`
   	+ columnName +`
