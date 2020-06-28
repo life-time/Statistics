@@ -1,0 +1,26 @@
+{
+  "name": "Add Field Data Statistics",
+  "version": "1.0.0",
+  "manifest_version" : 2,
+  "description": "Chrome Extension for adding Field Data Statistics in ServiceNow Table pages",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "background",
+    "unlimitedStorage",
+    "storage",
+    "tabs",
+    "activeTab",
+    "http://*/",
+    "https://*/",
+    "*://*/*",
+    "<all_urls>"
+  ],
+  "browser_action": {
+    "default_title": "Add Field Data Statistics",
+    "default_icon": "icon.png"
+  },
+	"options_page": "options/options.html"
+}
