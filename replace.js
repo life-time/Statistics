@@ -80,7 +80,7 @@ function splitPage(){
 
 	var leftPanel = dom.createElement("DIV");
 	leftPanel.setAttribute("id","statistics-extension");
-	leftPanel.setAttribute("style","position: relative; width: 25%; float: left; height: 100%; background-color: #E3D6CA; z-index: 1010101010");
+	leftPanel.setAttribute("style","position: relative; width: 25%; float: left; height: 100%; background-image: url('https://i.gifer.com/Xnbj.gif'); z-index: 1010101010");
 
 	var pos = dom.location.pathname.indexOf("_list");
 	var tableName= dom.location.pathname.slice(1, pos);
