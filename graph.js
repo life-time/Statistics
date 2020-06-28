@@ -108,7 +108,7 @@ function barChart(svgElem, width, height, series) {
         .call(g => g.select(".domain").remove());
 
 	svg.append("g")
-        .attr("fill", "#2f7ed8")
+        .attr("fill", "#83CED5")
 	    .selectAll("rect").data(series).enter()
 	        .append("rect")
             .attr("x", d => x(0))
