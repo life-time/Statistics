@@ -57,22 +57,6 @@ function splitePage(){
 	var dom = dataTableContainer.frame.contentWindow.document;//.activeElement;
 
 		var leftPanel = dom.createElement("DIV");
-  		//var textnode = dom.createTextNode("Water");
-
-		// creating button element  
-        var button = document.createElement('BUTTON1');  
-        // creating text to be 
-        //displayed on button 
-        var text = document.createTextNode("Button1_a");             
-		// appending text to button 	
-         button.appendChild(text); 
-                  
-         // appending button to div  
-		leftPanel.appendChild(button);
-		var content1 = dom.createElement("DIV");
-		content1.setAttribute("style","padding: 0 18px; display: none;  overflow: hidden;  background-color: #f1f1f1;");
-		var textnode = dom.createTextNode("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
-		
   		leftPanel.setAttribute("style","position: relative; width: 25%; float: left; height: 100%; background-color: #E3D6CA; z-index: 1010101010");
 
 		var pos = dom.location.pathname.indexOf("_list");
@@ -83,8 +67,46 @@ function splitePage(){
 
 		table.setAttribute("style","position: relative;  width: 75%;  float: left;  height: 100%;   z-index: 1010101010");
 		table.parentNode.insertBefore(leftPanel, table);
+		populateColumns(leftPanel,table);		
+
+}
+
+function getCollapseButton(columnName){
+	return `
+	<div>
+	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#`
+	+ columnName +
+	`">`
+  	+ columnName +`
+  	</button>
+ 	<div id="`
+ 	+ columnName +
+ 	`" class="collapse">
+    	Lorem ipsum dolor sit amet, consectetur adipisicing elit
+	</div>
+	</div>
+	`;
+}
+
+function populateColumns(leftPanel,tableName){
 	
-		dataTableContainer.table.style.fontFamily = 'fantasy';
+
+	var htmlContent;
+	var columns = getColumns(tableName);
+
+	if (columns){
+		for (i = 0; i < columns.length; i++) {
+			if (htmlContent) {
+	 	 		htmlContent = htmlContent + getCollapseButton(columns[i]);
+			}else{
+				htmlContent = getCollapseButton(columns[i]);
+			}
+		}
+		leftPanel.innerHTML = htmlContent;
+	}
+	else 
+		leftPanel.innerHTML ="no Columns found";
+
 }
 
 console.log('Turkugulu plugin loaded');
