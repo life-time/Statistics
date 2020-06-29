@@ -90,15 +90,16 @@ function splitPage(){
 
 	const statisticsPanel = doc.createElement("DIV");
 	statisticsPanel.setAttribute("id","statistics-extension");
-	statisticsPanel.setAttribute("style","position: relative; width: 10%; border-top: ridge;float: left; margin-top: 29px; height: 100%;"); 
+	statisticsPanel.setAttribute("style","position: relative; width: 10%; border: none; float: left; margin-top: 29px; height: 100%;"); 
 	
 	if (table){
 		table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 1010101010");
 		table.parentNode.insertBefore(statisticsPanel, table);
-		// dom.body.insertBefore(statisticsPanel, dom.body.firstChild);
 		populateColumns(statisticsPanel,table);
 		// add title
-		statisticsPanel.innerHTML = ` <div style="padding: 9px; border-bottom: ridge; color:#303a4;">Statistics</div>` + statisticsPanel.innerHTML 
+		statisticsPanel.innerHTML = ` <div style="padding: 10px;border-top: 2px solid #c3c6ca; margin-top: 2px;">
+									      <span style="font-family: &quot;Helvetica Neue&quot;, Arial; font-weight: bolder;">Statistics</span>
+									  </div>` + statisticsPanel.innerHTML;
 	}
 }
 
