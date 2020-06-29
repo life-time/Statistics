@@ -93,7 +93,7 @@ function splitPage(){
 	statisticsPanel.setAttribute("style","position: relative; width: 10%; border: none; float: left; margin-top: 29px; height: 100%;"); 
 	
 	if (table){
-		table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 1010101010");
+		table.setAttribute("style","position: relative;  width: 90%; float: left;  height: 100%; z-index: 0");
 		table.parentNode.insertBefore(statisticsPanel, table);
 		populateColumns(statisticsPanel,table);
 		// add title
